@@ -8,7 +8,7 @@ export default function HeroSection() {
     return (
         <section className="wrapper flex items-center justify-between gap-4 bg-gradient-to-r from-white via-blue-200 to-white py-20">
             <div className="space-y-4 text-center">
-                <h1 className="text-[#424242)] scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+                <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight text-[#424242] lg:text-5xl">
                     Start <span className="text-primary">Booking </span>
                     Smarter Today
                 </h1>
