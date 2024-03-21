@@ -81,6 +81,6 @@
 
 @layer components {
     .wrapper {
-        @apply px-28;
+        @apply md:px-16 lg:px-28 px-4;
     }
 }
