@@ -1,0 +1,138 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [uuid_ossp(map: "uuid-ossp", schema: "public")]
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+model User {
+  id            String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  email         String    @unique @db.VarChar(100)
+  name          String    @db.VarChar(100)
+  password      String    @db.VarChar(255)
+  emailVerified DateTime?
+  role          UserRole  @default(USER)
+  createdAt     DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt     DateTime  @updatedAt @db.Timestamp(6)
+  business      Business?
+  bookings      Booking[]
+  accounts      Account[]
+
+  @@index([email])
+}
+
+model Business {
+  id          String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name        String    @unique @db.VarChar(100)
+  description String    @db.Text
+  logoUrl     String?
+  email       String    @db.VarChar(100)
+  phoneNumber String?
+  isVerified  Boolean   @default(false)
+  User        User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId     String    @unique @db.Uuid
+  services    Service[]
+  createdAt   DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt   DateTime  @updatedAt @db.Timestamp(6)
+  bookings    Booking[]
+
+  @@index([ownerId])
+}
+
+model Service {
+  id            String          @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name          String          @db.VarChar(100)
+  businessHours BusinessHours[]
+  description   String          @db.Text
+  duration      Int             @default(60) @db.Integer
+  business      Business        @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  businessId    String          @db.Uuid
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  bookings      Booking[]
+
+  @@index([businessId])
+}
+
+model BusinessHours {
+  id        String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  service   Service   @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  serviceId String    @db.Uuid
+  dayOfWeek DayOfWeek
+  isClosed  Boolean   @default(false)
+  startTime DateTime  @db.Time()
+  endTime   DateTime  @db.Time()
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@unique([serviceId, dayOfWeek])
+  @@index([serviceId, dayOfWeek])
+}
+
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+model Booking {
+  id          String        @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String        @db.Uuid
+  service     Service       @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  serviceId   String        @db.Uuid
+  business    Business      @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  businessId  String        @db.Uuid
+  bookingDate DateTime      @db.Date()
+  bookingTime DateTime      @db.Time()
+  details     String?
+  status      BookingStatus @default(PENDING)
+  createdAt   DateTime      @default(now()) @db.Timestamp(6)
+  updatedAt   DateTime      @updatedAt
+
+  @@index([userId, serviceId, businessId, bookingDate, bookingTime])
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+model Account {
+  id                String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  userId            String  @db.Uuid
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
