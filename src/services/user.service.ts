@@ -1,0 +1,29 @@
+import { getUserByEmail } from '@/lib/data/user';
+import { LoginSchema } from '@/lib/schema/login-schema';
+import bcrypt from 'bcrypt';
+
+type LoginDataType =
+    | {
+          email: string;
+          password: string;
+      }
+    | Partial<Record<string, unknown>>;
+
+export const loginUserService = async (data: LoginDataType) => {
+    const parsedCredentials = LoginSchema.safeParse(data);
+
+    if (parsedCredentials.success) {
+        const { email, password } = parsedCredentials.data;
+        const user = await getUserByEmail(email);
+
+        if (!user || !user.password) return null;
+
+        const passwordsMatch = await bcrypt.compare(password, user.password);
+
+        if (!passwordsMatch) return null;
+
+        return user;
+    }
+
+    return null;
+};
