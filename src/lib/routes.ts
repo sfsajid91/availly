@@ -12,9 +12,15 @@ export const authRoute = [
 /**
  * @description List of routes that are accessible by all users
  */
-export const publicRoute = ['/about', '/'];
+export const publicRoute = ['/about', '/', '/businesses'];
 
 /**
  * @description List of routes that are accessible only by authenticated users
  */
 export const authApiRoute = '/api/auth';
+
+/**
+ * @description Route to redirect to after login
+ */
+
+export const redirectRoute = '/businesses';

@@ -12,18 +12,26 @@ type LoginDataType =
 export const loginUserService = async (data: LoginDataType) => {
     const parsedCredentials = LoginSchema.safeParse(data);
 
-    if (parsedCredentials.success) {
-        const { email, password } = parsedCredentials.data;
-        const user = await getUserByEmail(email);
+    if (!parsedCredentials.success) {
+        return null;
+    }
+    const { email, password } = parsedCredentials.data;
+    const user = await getUserByEmail(email);
 
-        if (!user || !user.password) return null;
-
-        const passwordsMatch = await bcrypt.compare(password, user.password);
-
-        if (!passwordsMatch) return null;
-
-        return user;
+    if (!user || !user.password) {
+        return null;
     }
 
-    return null;
+    const passwordsMatch = await bcrypt.compare(password, user.password);
+
+    if (!passwordsMatch) {
+        return null;
+    }
+
+    // Check if email is verified
+    // if (!user.emailVerified) {
+    //     throw new Error('Email not verified');
+    // }
+
+    return user;
 };
