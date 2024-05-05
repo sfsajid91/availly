@@ -18,15 +18,21 @@ Cypress.Commands.add('login', (email, password) => {
             cy.visit('/login');
 
             cy.get('input[name="email"]').type(email);
-            cy.get('input[name="password"]').type(`${password}{enter}`, {
-                log: false,
-            });
+            cy.get('input[name="password"]').type(password);
 
             cy.get('button[type="submit"]').contains('Login').click();
+            cy.url().should('eq', Cypress.config().baseUrl + '/businesses');
         },
         {
             validate: () => {
-                cy.getCookie('authjs.session-token').should('exist');
+                cy.request('/api/auth/session')
+                    .its('body')
+                    .then((body) => {
+                        if (body.user.email === email) {
+                            return true;
+                        }
+                        return false;
+                    });
             },
         }
     );

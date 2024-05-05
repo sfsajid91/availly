@@ -69,13 +69,11 @@ describe('Authentication and authorization', () => {
             cy.login(user.email, user.password);
         });
 
-        cy.url().should('eq', Cypress.config().baseUrl + '/businesses');
+        cy.visit('/login');
         cy.get('button').contains('Logout').should('exist');
         cy.fixture('user').then((user) => {
             cy.get('p').contains(`Hello: ${user.name}`).should('exist');
         });
-
-        cy.visit('/login');
 
         cy.url().should('eq', Cypress.config().baseUrl + '/businesses');
     });
