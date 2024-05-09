@@ -3,13 +3,9 @@ import prisma from '@/lib/prisma';
 import { prismaAdapter } from '@/lib/prismaAdapter';
 import { loginUserService } from '@/services/user.service';
 import CredentialsProvider from '@auth/core/providers/credentials';
-import NextAuth, { CredentialsSignin } from 'next-auth';
+import NextAuth from 'next-auth';
 import type { Adapter } from 'next-auth/adapters';
 import GoogleProvider from 'next-auth/providers/google';
-
-class UnverifiedEmailError extends CredentialsSignin {
-    code = 'Verify your email address before signing in.';
-}
 
 export const {
     handlers: { GET, POST },
@@ -34,19 +30,8 @@ export const {
             },
 
             async authorize(credentials) {
-                try {
-                    const user = await loginUserService(credentials);
-                    return user;
-                } catch (err) {
-                    //for email verification
-                    if (
-                        err instanceof Error &&
-                        err.message === 'Email not verified'
-                    ) {
-                        throw new UnverifiedEmailError();
-                    }
-                    throw err;
-                }
+                const user = await loginUserService(credentials);
+                return user;
             },
         }),
     ],

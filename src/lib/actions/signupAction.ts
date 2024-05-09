@@ -5,6 +5,7 @@ import {
     SignupSchema,
     type SignupSchemaType,
 } from '@/lib/schema/signup-schema';
+import { sendVerificationEmail } from '@/utils/email/email';
 import bcrypt from 'bcrypt';
 
 export const signupAction = async (data: SignupSchemaType) => {
@@ -41,14 +42,15 @@ export const signupAction = async (data: SignupSchemaType) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        await prisma.user.create({
+        const user = await prisma.user.create({
             data: {
                 name,
                 email,
                 password: hashedPassword,
             },
         });
-        // TODO: add email verification
+
+        await sendVerificationEmail(email, user.id, name);
 
         return {
             success: true,

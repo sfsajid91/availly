@@ -37,8 +37,10 @@ export const loginAction = async (data: LoginSchemaType) => {
                         );
                     }
                     return generateErrorResponse('Invalid credentials.');
-                // case 'AuthorizedCallbackError':
-                //     return generateErrorResponse('Email not verified.', false);
+
+                case 'AccessDenied':
+                    return generateErrorResponse('You are not authorized.');
+
                 default:
                     return generateErrorResponse('Something went wrong.');
             }

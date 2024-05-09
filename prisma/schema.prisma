@@ -11,18 +11,19 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  email         String    @unique @db.VarChar(100)
-  name          String    @db.VarChar(100)
-  password      String?   @db.VarChar(255)
-  avatar        String?
-  emailVerified DateTime?
-  role          UserRole  @default(USER)
-  createdAt     DateTime  @default(now()) @db.Timestamp(6)
-  updatedAt     DateTime  @updatedAt @db.Timestamp(6)
-  accounts      Account[]
-  bookings      Booking[]
-  business      Business?
+  id                String              @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  email             String              @unique @db.VarChar(100)
+  name              String              @db.VarChar(100)
+  password          String?             @db.VarChar(255)
+  avatar            String?
+  emailVerified     DateTime?
+  role              UserRole            @default(USER)
+  createdAt         DateTime            @default(now()) @db.Timestamp(6)
+  updatedAt         DateTime            @updatedAt @db.Timestamp(6)
+  accounts          Account[]
+  bookings          Booking[]
+  business          Business?
+  VerificationToken VerificationToken[]
 
   @@index([email])
 }
@@ -111,9 +112,27 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
+model VerificationToken {
+  id      String                @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  email   String
+  token   String                @unique @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  expires DateTime
+  sent    Boolean               @default(false)
+  type    VerificationTokenType @default(EMAIL)
+  userId  String                @db.Uuid
+  user    User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([email, token])
+}
+
 enum UserRole {
   USER
   ADMIN
+}
+
+enum VerificationTokenType {
+  EMAIL
+  PASSWORD_RESET
 }
 
 enum DayOfWeek {
