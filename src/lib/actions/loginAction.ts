@@ -3,7 +3,7 @@
 import { signIn, signOut } from '@/auth';
 import type { LoginSchemaType } from '@/lib/schema/login-schema';
 
-import { AuthError } from 'next-auth';
+import { AuthError, CredentialsSignin } from 'next-auth';
 
 export const loginAction = async (data: LoginSchemaType) => {
     const generateErrorResponse = (error: string, all: boolean = true) => {
@@ -30,9 +30,12 @@ export const loginAction = async (data: LoginSchemaType) => {
         if (error instanceof AuthError) {
             switch (error.type) {
                 case 'CredentialsSignin':
-                    if (error.name === 'UnverifiedEmailError') {
+                    if (
+                        error instanceof CredentialsSignin &&
+                        error.code === 'UnverifiedEmailError'
+                    ) {
                         return generateErrorResponse(
-                            'Email not verified.',
+                            'Email is not verified.',
                             false
                         );
                     }

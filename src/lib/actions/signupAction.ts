@@ -50,7 +50,10 @@ export const signupAction = async (data: SignupSchemaType) => {
             },
         });
 
-        await sendVerificationEmail(email, user.id, name);
+        // disable sending email in test environment
+        if (process.env.ENVIRONMENT !== 'test') {
+            await sendVerificationEmail(email, user.id, name);
+        }
 
         return {
             success: true,

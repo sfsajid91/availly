@@ -11,7 +11,7 @@ type LoginDataType =
     | Partial<Record<string, unknown>>;
 
 class UnverifiedEmailError extends CredentialsSignin {
-    code = 'Verify your email address before signing in.';
+    code = 'UnverifiedEmailError';
 }
 
 export const loginUserService = async (data: LoginDataType) => {
