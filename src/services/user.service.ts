@@ -1,6 +1,7 @@
 import { getUserByEmail } from '@/lib/data/user';
 import { LoginSchema } from '@/lib/schema/login-schema';
 import bcrypt from 'bcrypt';
+import { CredentialsSignin } from 'next-auth';
 
 type LoginDataType =
     | {
@@ -8,6 +9,10 @@ type LoginDataType =
           password: string;
       }
     | Partial<Record<string, unknown>>;
+
+class UnverifiedEmailError extends CredentialsSignin {
+    code = 'UnverifiedEmailError';
+}
 
 export const loginUserService = async (data: LoginDataType) => {
     const parsedCredentials = LoginSchema.safeParse(data);
@@ -29,9 +34,9 @@ export const loginUserService = async (data: LoginDataType) => {
     }
 
     // Check if email is verified
-    // if (!user.emailVerified) {
-    //     throw new Error('Email not verified');
-    // }
+    if (!user.emailVerified) {
+        throw new UnverifiedEmailError();
+    }
 
     return user;
 };

@@ -56,15 +56,23 @@ describe('Authentication and authorization', () => {
             .should('exist');
     });
 
+    it('should throw unverified email error', () => {
+        cy.visit('/login');
+        cy.fixture('user').then((user) => {
+            cy.get('input[name="email"]').type(user.email);
+            cy.get('input[name="password"]').type(user.password);
+        });
+
+        cy.get('button[type="submit"]').contains('Login').click();
+
+        cy.get('div').contains('Email is not verified').should('exist');
+    });
+
     it('should login a user', () => {
-        // cy.visit('/login');
+        cy.fixture('user').then((user) => {
+            cy.task('updateEmailVerified', user.email);
+        });
 
-        // cy.fixture('user').then((user) => {
-        //     cy.get('input[name="email"]').type(user.email);
-        //     cy.get('input[name="password"]').type(user.password);
-        // });
-
-        // cy.get('button[type="submit"]').contains('Login').click();
         cy.fixture('user').then((user) => {
             cy.login(user.email, user.password);
         });
