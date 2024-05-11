@@ -2,9 +2,8 @@ import { authConfig } from '@/auth.config';
 import prisma from '@/lib/prisma';
 import { prismaAdapter } from '@/lib/prismaAdapter';
 import { loginUserService } from '@/services/user.service';
-import CredentialsProvider from '@auth/core/providers/credentials';
 import NextAuth from 'next-auth';
-import type { Adapter } from 'next-auth/adapters';
+import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 
 export const {
@@ -21,7 +20,6 @@ export const {
             allowDangerousEmailAccountLinking: true,
         }),
 
-        // @ts-expect-error - some typescript error that doesn't matter
         CredentialsProvider({
             name: 'Email',
             credentials: {
@@ -59,5 +57,5 @@ export const {
         },
     },
 
-    adapter: prismaAdapter as Adapter,
+    adapter: prismaAdapter,
 });
