@@ -13,7 +13,7 @@ export const sendVerificationEmail = async (
     const header = headers();
     const host = header.get('x-forwarded-host');
     const protocol = header.get('x-forwarded-proto');
-    const url = `${protocol}://${process.env.VERCEL_URL || host}`;
+    const url = `${protocol}://${process.env.VERCEL_PROJECT_PRODUCTION_URL || host}`;
 
     const existingToken = await prisma.verificationToken.findFirst({
         where: {
@@ -81,7 +81,7 @@ export const sendPasswordResetEmail = async (
     const header = headers();
     const host = header.get('x-forwarded-host');
     const protocol = header.get('x-forwarded-proto');
-    const url = `${protocol}://${process.env.VERCEL_URL || host}`;
+    const url = `${protocol}://${process.env.VERCEL_PROJECT_PRODUCTION_URL || host}`;
 
     const existingToken = await prisma.verificationToken.findFirst({
         where: {
