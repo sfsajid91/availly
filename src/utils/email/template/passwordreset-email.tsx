@@ -16,14 +16,14 @@ type EmailTemplateProps = {
     name: string;
 };
 
-export default function VerificationEmail({
+export default function PasswordResetEmail({
     verificationUrl,
     name,
 }: EmailTemplateProps) {
     return (
         <Html>
             <Head />
-            <Preview>Verify Your Availly Email Address</Preview>
+            <Preview>Availly Password Reset</Preview>
             <Tailwind>
                 <Body className="mx-auto my-auto bg-white px-2 font-sans">
                     <Container className="mx-auto my-auto bg-slate-400 p-5 text-gray-800">
@@ -40,7 +40,7 @@ export default function VerificationEmail({
                                     className="mx-auto h-12 w-12"
                                 />
                                 <h2 className="text-center text-xl font-bold text-white">
-                                    Verify your email address
+                                    Reset your password
                                 </h2>
                             </Section>
                             <Section className="px-8">
@@ -48,10 +48,11 @@ export default function VerificationEmail({
                                     Hi <strong>{name}</strong>,
                                     <br />
                                     <span className="mt-2">
-                                        Thank you for signing up for Availly! To
-                                        access the full features of your
-                                        account, please verify your email
-                                        address.
+                                        We received a request to reset your
+                                        password. If you did not make this
+                                        request, please ignore this email.
+                                        Otherwise, you can reset your password
+                                        using this link:
                                     </span>
                                 </Text>
                                 <br />
@@ -60,22 +61,24 @@ export default function VerificationEmail({
                                         href={verificationUrl}
                                         className="inline-flex items-center justify-center rounded bg-blue-400 px-4 py-2 font-semibold text-white"
                                     >
-                                        Verify Email
+                                        Reset Password
                                     </Link>
                                 </Section>
                                 <Text>
-                                    This link will expire in 24 hours after you
-                                    receive this email.
+                                    This link will expire in 30 minutes after
+                                    you receive this email.
                                 </Text>
 
                                 <Text className="mt-4">
-                                    If you did not create an account, no further
-                                    action is required.
+                                    Once you click the link, you&apos;ll be
+                                    prompted to choose a new, strong password
+                                    for your account.
                                     <br />
+                                    We&apos;re always happy to help!
                                     <br />
-                                    Thanks,
-                                    <br />
-                                    The Availly Team
+                                    <span className="mt-1">
+                                        The Availly Team
+                                    </span>
                                 </Text>
                             </Section>
                         </Section>

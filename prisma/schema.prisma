@@ -115,7 +115,7 @@ model Account {
 model VerificationToken {
   id      String                @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   email   String
-  token   String                @unique @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  token   String                @unique @default(cuid())
   expires DateTime
   sent    Boolean               @default(false)
   type    VerificationTokenType @default(EMAIL)

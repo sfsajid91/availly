@@ -5,6 +5,9 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA "public";
 CREATE TYPE "UserRole" AS ENUM ('USER', 'ADMIN');
 
 -- CreateEnum
+CREATE TYPE "VerificationTokenType" AS ENUM ('EMAIL', 'PASSWORD_RESET');
+
+-- CreateEnum
 CREATE TYPE "DayOfWeek" AS ENUM ('MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY');
 
 -- CreateEnum
@@ -102,6 +105,19 @@ CREATE TABLE "Account" (
     CONSTRAINT "Account_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "VerificationToken" (
+    "id" UUID NOT NULL DEFAULT uuid_generate_v4(),
+    "email" TEXT NOT NULL,
+    "token" TEXT NOT NULL,
+    "expires" TIMESTAMP(3) NOT NULL,
+    "sent" BOOLEAN NOT NULL DEFAULT false,
+    "type" "VerificationTokenType" NOT NULL DEFAULT 'EMAIL',
+    "userId" UUID NOT NULL,
+
+    CONSTRAINT "VerificationToken_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
@@ -132,6 +148,12 @@ CREATE INDEX "Booking_userId_serviceId_businessId_bookingDate_bookingTime_idx" O
 -- CreateIndex
 CREATE UNIQUE INDEX "Account_provider_providerAccountId_key" ON "Account"("provider", "providerAccountId");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "VerificationToken_token_key" ON "VerificationToken"("token");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "VerificationToken_email_token_key" ON "VerificationToken"("email", "token");
+
 -- AddForeignKey
 ALTER TABLE "Business" ADD CONSTRAINT "Business_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -152,3 +174,6 @@ ALTER TABLE "Booking" ADD CONSTRAINT "Booking_userId_fkey" FOREIGN KEY ("userId"
 
 -- AddForeignKey
 ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "VerificationToken" ADD CONSTRAINT "VerificationToken_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
