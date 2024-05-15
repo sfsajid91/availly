@@ -12,7 +12,7 @@ import Link from 'next/link';
 
 export default function Footer() {
     return (
-        <footer className="wrapper space-y-4 border-t bg-white pt-14">
+        <footer className="wrapper container space-y-4 border-t bg-white pt-14">
             <div className="flex flex-wrap justify-between gap-8">
                 <div className="max-w-sm space-y-2">
                     <Link href="/">

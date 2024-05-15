@@ -35,7 +35,7 @@ const benifitItems = [
 
 export default function Benefits() {
     return (
-        <section className="wrapper bg-gradient-to-r from-gray-200 to-primary/40 py-14">
+        <section className="wrapper container bg-gradient-to-r from-gray-200 to-primary/40 py-14">
             <h1 className="scroll-m-20 text-center text-4xl font-bold tracking-tight text-[#424242] lg:text-5xl">
                 Benefits
             </h1>

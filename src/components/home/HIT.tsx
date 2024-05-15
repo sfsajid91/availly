@@ -26,7 +26,7 @@ const hitImages = [
 
 export default function HIT() {
     return (
-        <section className="wrapper bg-gray-50 py-14">
+        <section className="wrapper container bg-gray-50 py-14">
             <h1 className="mb-8 scroll-m-20 text-center text-4xl font-bold tracking-tight text-[#424242] lg:text-5xl">
                 How It Works
             </h1>
