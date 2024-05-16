@@ -20,6 +20,17 @@ export const authConfig = {
             const isPublicRoute = publicRoute.includes(nextUrl.pathname);
             const isAuthApiRoute = nextUrl.pathname.startsWith(authApiRoute);
             if (isPublicRoute || isAuthApiRoute) return true;
+
+            if (isAuthRoute) {
+                const callbackUrl = nextUrl.searchParams.get('callbackUrl');
+                if (callbackUrl) {
+                    const paramUrl = new URL(callbackUrl);
+                    if (publicRoute.includes(paramUrl.pathname)) {
+                        return NextResponse.redirect(paramUrl);
+                    }
+                }
+            }
+
             if (!isLoggedIn && isAuthRoute) return true;
 
             if (isLoggedIn && isAuthRoute) {
