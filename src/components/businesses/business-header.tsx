@@ -1,5 +1,6 @@
 import BusinessFilter from '@/components/businesses/business-filter';
 import BusinessSearch from '@/components/businesses/business-search';
+import { Suspense } from 'react';
 
 export default function BusinessHeader() {
     return (
@@ -13,8 +14,10 @@ export default function BusinessHeader() {
                 </p>
             </div>
             <div className="flex w-full items-center space-x-4 md:w-auto">
-                <BusinessSearch />
-                <BusinessFilter />
+                <Suspense>
+                    <BusinessSearch />
+                    <BusinessFilter />
+                </Suspense>
             </div>
         </div>
     );
