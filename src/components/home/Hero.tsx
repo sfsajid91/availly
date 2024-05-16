@@ -16,7 +16,7 @@ export default function HeroSection() {
                     Sign up for Availly and experience effortless scheduling
                 </h4>
                 <Button className="group gap-2" size="lg" asChild>
-                    <Link href="/">
+                    <Link href="/business">
                         <ArrowRightIcon className="size-5 transition-transform duration-300 group-hover:translate-x-1" />
                         Get Started
                     </Link>
