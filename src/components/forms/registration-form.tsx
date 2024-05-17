@@ -60,14 +60,14 @@ export default function RegistrationForm() {
 
         if (!result?.success && result.message) {
             setMessage({
-                message: result?.message as string,
+                message: result?.message,
                 success: false,
             });
         }
 
         if (result.success && result.message) {
             setMessage({
-                message: result?.message as string,
+                message: result?.message,
                 success: true,
             });
         }
