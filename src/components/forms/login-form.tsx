@@ -59,7 +59,7 @@ export default function LoginForm() {
         const result = await loginAction(values);
 
         if (result?.errors) {
-            result.errors.map((error) => {
+            result.errors.forEach((error) => {
                 form.setError(error.field as keyof LoginSchemaType, {
                     type: 'manual',
                     message: error.message,
