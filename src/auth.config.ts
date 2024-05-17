@@ -17,10 +17,13 @@ export const authConfig = {
         async authorized({ auth, request: { nextUrl } }) {
             const isLoggedIn = !!auth?.user;
             const isAuthRoute = authRoute.includes(nextUrl.pathname);
+
+            // allow public routes using regex
             const isPublicRoute = publicRoute.some((route: string) => {
                 const regex = new RegExp(`^${route.replace('*', '.*')}$`);
                 return regex.test(nextUrl.pathname);
             });
+
             const isAuthApiRoute = nextUrl.pathname.startsWith(authApiRoute);
             if (isPublicRoute || isAuthApiRoute) return true;
 
