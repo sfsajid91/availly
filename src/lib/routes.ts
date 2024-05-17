@@ -12,7 +12,7 @@ export const authRoute = [
 /**
  * @description List of routes that are accessible by all users
  */
-export const publicRoute = ['/about', '/', '/business'];
+export const publicRoute = ['/about', '/', '/business', '/business/*'];
 
 /**
  * @description List of routes that are accessible only by authenticated users
