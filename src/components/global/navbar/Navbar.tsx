@@ -9,7 +9,12 @@ export default async function Navbar() {
         <nav className="sticky top-0 z-50 bg-white/60 shadow backdrop-blur-sm">
             <div className="wrapper container flex w-full items-center justify-between py-4">
                 <Link href="/">
-                    <Image src={logoImg} alt="Availly Logo" width={150} />
+                    <Image
+                        src={logoImg}
+                        alt="Availly Logo"
+                        width={150}
+                        priority
+                    />
                 </Link>
 
                 <ul className="flex gap-4">
