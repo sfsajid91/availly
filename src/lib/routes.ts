@@ -23,4 +23,4 @@ export const authApiRoute = '/api/auth';
  * @description Route to redirect to after login
  */
 
-export const redirectRoute = '/business';
+export const redirectRoute = '/dashboard';
