@@ -39,12 +39,10 @@ export default function Rating({ rating, className }: RatingProps) {
                 />
             ))}
             {rating % 1 >= 0 && (
-                <>
-                    <div className="relative overflow-hidden p-0">
-                        <StarIcon className="size-5  text-yellow-500" />
-                        <StarHalfIcon className="absolute bottom-0 left-0 size-5 fill-yellow-500 text-yellow-500" />
-                    </div>
-                </>
+                <div className="relative overflow-hidden p-0">
+                    <StarIcon className="size-5  text-yellow-500" />
+                    <StarHalfIcon className="absolute bottom-0 left-0 size-5 fill-yellow-500 text-yellow-500" />
+                </div>
             )}
 
             {Array.from({ length: 5 - Math.ceil(rating) }).map((_, i) => (
