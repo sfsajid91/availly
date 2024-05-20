@@ -70,7 +70,10 @@ export const authConfig = {
             return false;
         },
         async jwt({ token, user }) {
-            if (user) token.role = user.role;
+            if (user) {
+                token.role = user.role;
+                token.avatar = user.avatar;
+            }
             return token;
         },
         // async redirect({ url, baseUrl }) {
@@ -86,6 +89,7 @@ export const authConfig = {
             if (session.user) {
                 session.user.role = token.role as UserRole;
                 session.user.id = token.sub as string;
+                session.user.avatar = token.avatar as string;
             }
             return session;
         },
