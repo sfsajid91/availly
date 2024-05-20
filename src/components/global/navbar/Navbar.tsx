@@ -7,7 +7,7 @@ import NavItems from './nav-items';
 export default async function Navbar() {
     return (
         <nav className="sticky top-0 z-50 bg-white/60 shadow backdrop-blur-sm">
-            <div className="wrapper container flex w-full items-center justify-between py-4">
+            <div className="wrapper container flex h-16 w-full items-center justify-between py-2">
                 <Link href="/">
                     <Image
                         src={logoImg}
