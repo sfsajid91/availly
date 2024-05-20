@@ -1,5 +1,4 @@
 import logoImg from '@/../public/logo.png';
-import AuthWrapper from '@/components/auth-wrapper';
 import Image from 'next/image';
 import Link from 'next/link';
 import NavItems from './nav-items';
@@ -18,9 +17,7 @@ export default async function Navbar() {
                 </Link>
 
                 <ul className="flex gap-4">
-                    <AuthWrapper>
-                        <NavItems />
-                    </AuthWrapper>
+                    <NavItems />
                 </ul>
             </div>
         </nav>

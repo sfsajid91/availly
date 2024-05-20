@@ -1,3 +1,4 @@
+import AuthWrapper from '@/components/auth-wrapper';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import NextTopLoader from 'nextjs-toploader';
@@ -23,7 +24,7 @@ export default function RootLayout({
         <html lang="en">
             <body className={`${inter.className} antialiased`}>
                 <NextTopLoader height={4} showSpinner={false} />
-                {children}
+                <AuthWrapper>{children}</AuthWrapper>
             </body>
         </html>
     );
