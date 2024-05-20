@@ -1,21 +1,16 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import NavDropdown from '@/components/global/navbar/nav-dropdown';
 import { Input } from '@/components/ui/input';
-import { logoutAction } from '@/lib/actions/loginAction';
 import { getSession } from '@/lib/getSession';
-import { splitName } from '@/utils/splitName';
 import { SearchIcon } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import DashboardBreadcrumb from './dashboard-breadcrumb';
 import DashboardSheet from './dashboard-sheet';
+
+const dropdownItems = [
+    { label: 'Appointments', href: '/dashboard/appoinments' },
+    { label: 'Profile', href: '/dashboard/profile' },
+    { label: 'Settings', href: '/dashboard/settings' },
+];
 
 export default async function DashboardNav() {
     const session = await getSession();
@@ -34,37 +29,7 @@ export default async function DashboardNav() {
                 />
             </div>
 
-            <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                    <Button
-                        variant="outline"
-                        size="icon"
-                        className="overflow-hidden rounded-full"
-                    >
-                        <Avatar>
-                            <AvatarImage
-                                alt="John Doe"
-                                src={session?.user?.avatar as string}
-                            />
-                            <AvatarFallback>
-                                {splitName(session.user.name!)}
-                            </AvatarFallback>
-                        </Avatar>
-                    </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>Settings</DropdownMenuItem>
-                    <DropdownMenuItem>Support</DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                        <form action={logoutAction}>
-                            <button type="submit">Logout</button>
-                        </form>
-                    </DropdownMenuItem>
-                </DropdownMenuContent>
-            </DropdownMenu>
+            <NavDropdown items={dropdownItems} />
         </header>
     );
 }

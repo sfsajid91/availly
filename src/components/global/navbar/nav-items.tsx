@@ -2,17 +2,19 @@
 
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { logoutAction } from '@/lib/actions/loginAction';
-import { LogInIcon, LogOutIcon, UserIcon } from 'lucide-react';
+
+import { LogInIcon, UserIcon } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import NavDropdown from './nav-dropdown';
+
+const dropdownItems = [
+    { label: 'Dashboard', href: '/dashboard' },
+    { label: 'Profile', href: '/dashboard/profile' },
+];
 
 export default function NavItems() {
-    const { status } = useSession();
-
-    // const handleLogout = async () => {
-    //     await signOut();
-    // };
+    const { status, data: session } = useSession();
 
     return (
         <>
@@ -54,14 +56,9 @@ export default function NavItems() {
                 </>
             )}
 
-            {status === 'authenticated' && (
+            {status === 'authenticated' && session.user && (
                 <li>
-                    <form action={logoutAction}>
-                        <Button type="submit" size="default">
-                            <LogOutIcon className="mr-2 size-4" />
-                            Logout
-                        </Button>
-                    </form>
+                    <NavDropdown items={dropdownItems} />
                 </li>
             )}
         </>
