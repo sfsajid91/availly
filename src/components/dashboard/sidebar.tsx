@@ -18,7 +18,7 @@ export default function Sidebar() {
                         width={30}
                         priority
                     />
-                    <span className="sr-only">Acme Inc</span>
+                    <span className="sr-only">Availly</span>
                 </Link>
                 {navItems.map((item) => (
                     <SidebarItem key={item.href} item={item} />
