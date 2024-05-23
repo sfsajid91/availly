@@ -48,12 +48,12 @@ const items = [
 export default function DashboardPage() {
     return (
         <>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {items.map((item, index) => (
                     <DashboardCard key={index} {...item} />
                 ))}
             </div>
-            <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="mt-8 grid grid-cols-1 gap-4">
                 <Card className="w-full">
                     <CardHeader>
                         <CardTitle>Recent Activity</CardTitle>

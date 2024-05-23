@@ -3,20 +3,11 @@
 import logoImg from '@/../public/logo.png';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { cn } from '@/lib/utils';
-import { PanelLeftIcon, type LucideIcon } from 'lucide-react';
+import { PanelLeftIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { navItems } from './navbar-items';
-
-type DashboardSheetItemProps = {
-    item: {
-        name: string;
-        icon: LucideIcon;
-        href: string;
-    };
-};
+import SidebarItem, { SidebarCollapsibleItem } from './sidebar-item';
 
 export default function DashboardSheet() {
     return (
@@ -27,8 +18,8 @@ export default function DashboardSheet() {
                     <span className="sr-only">Toggle Menu</span>
                 </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="sm:max-w-xs">
-                <nav className="grid gap-6 text-lg font-medium">
+            <SheetContent side="left" className="overflow-y-auto sm:max-w-xs">
+                <nav className="grid gap-4 text-lg font-medium">
                     <Link href="/">
                         <Image
                             src={logoImg}
@@ -37,29 +28,27 @@ export default function DashboardSheet() {
                             priority
                         />
                     </Link>
-                    {navItems.map((item) => (
-                        <DashboardSheetItem key={item.href} item={item} />
-                    ))}
+                    {navItems.map((item) =>
+                        item.children ? (
+                            <SidebarCollapsibleItem
+                                key={item.name}
+                                icon={item.icon}
+                                name={item.name}
+                                items={item.children}
+                            />
+                        ) : (
+                            <SidebarItem
+                                key={item.name}
+                                item={{
+                                    name: item.name,
+                                    icon: item.icon,
+                                    href: item.href,
+                                }}
+                            />
+                        )
+                    )}
                 </nav>
             </SheetContent>
         </Sheet>
-    );
-}
-
-function DashboardSheetItem({ item }: DashboardSheetItemProps) {
-    const pathName = usePathname();
-    return (
-        <Link
-            href={item.href}
-            className={cn(
-                'flex items-center gap-4 rounded px-2.5 py-2 text-muted-foreground hover:text-foreground',
-                {
-                    'bg-accent text-foreground': pathName === item.href,
-                }
-            )}
-        >
-            <item.icon className="h-5 w-5" />
-            {item.name}
-        </Link>
     );
 }
