@@ -21,7 +21,7 @@ Cypress.Commands.add('login', (email, password) => {
             cy.get('input[name="password"]').type(password);
 
             cy.get('button[type="submit"]').contains('Login').click();
-            cy.url().should('eq', Cypress.config().baseUrl + '/businesses');
+            cy.url().should('eq', Cypress.config().baseUrl + '/dashboard');
         },
         {
             validate: () => {
