@@ -4,7 +4,7 @@ describe('Authentication and authorization', () => {
     });
 
     it('should redirect to the login page', () => {
-        cy.visit('/businesses');
+        cy.visit('/dashboard');
 
         cy.url().should('include', '/login');
     });
@@ -78,11 +78,26 @@ describe('Authentication and authorization', () => {
         });
 
         cy.visit('/login');
-        cy.get('button').contains('Logout').should('exist');
-        cy.fixture('user').then((user) => {
-            cy.get('p').contains(`Hello: ${user.name}`).should('exist');
-        });
+        cy.get('button[id="radix-:r0:"]').as('userMenu');
 
-        cy.url().should('eq', Cypress.config().baseUrl + '/businesses');
+        cy.get('@userMenu').click();
+
+        cy.get('button').contains('Logout').should('exist');
+
+        cy.url().should('eq', Cypress.config().baseUrl + '/dashboard');
+    });
+
+    it('should logout a user', () => {
+        cy.fixture('user').then((user) => {
+            cy.login(user.email, user.password);
+        });
+        cy.visit('/dashboard');
+
+        cy.get('button[id="radix-:r0:"]').click();
+
+        cy.get('button').contains('Logout').click();
+
+        cy.get('a').contains('Register').should('exist');
+        cy.url().should('include', '/login');
     });
 });
